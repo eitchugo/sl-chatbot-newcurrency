@@ -102,3 +102,11 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# pycharm
+.idea
+
+# configuration and database files
+/settings.json
+/settings.js
+/Currency.db

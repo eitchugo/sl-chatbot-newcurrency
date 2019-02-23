@@ -1,0 +1,34 @@
+{
+  "output_file": "settings.json",
+  "name": {
+    "type": "textbox",
+    "value": "pennies",
+    "label": "Currency name",
+    "tooltip": "The currency name.",
+    "group": ""
+  },
+  "frequency": {
+    "type": "slider",
+    "label": "Interval between currency gains",
+    "value": 10,
+    "min": 1,
+    "max": 60,
+    "ticks": 1,
+    "tooltip": "This will give users currency at the specified interval.",
+    "group": ""
+  },
+  "quantity": {
+    "type": "textbox",
+    "value": "10",
+    "label": "Currency gain",
+    "tooltip": "How many points the users will earn at each interval.",
+    "group": ""
+  },
+  "gain_offline": {
+    "type": "checkbox",
+    "value": false,
+    "label": "Gain currency while offline",
+    "tooltip": "If turned on, users on the channel will gain currency while the stream is offline.",
+    "group": ""
+  }
+}
