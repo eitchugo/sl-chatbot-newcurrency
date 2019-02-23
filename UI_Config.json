@@ -24,6 +24,13 @@
     "tooltip": "How many points the users will earn at each interval.",
     "group": ""
   },
+  "only_subs": {
+    "type": "checkbox",
+    "value": false,
+    "label": "Only subs will gain currency",
+    "tooltip": "If turned on, only subs will gain currency at each interval.",
+    "group": ""
+  },
   "gain_offline": {
     "type": "checkbox",
     "value": false,

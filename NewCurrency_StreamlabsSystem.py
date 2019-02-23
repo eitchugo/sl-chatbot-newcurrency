@@ -33,9 +33,10 @@ def Init():
     settings.save()
 
     # database initialization
+    global currency, db
     db = InstancedDatabase(database_file)
-    global currency
     currency = Currency(Parent, db, settings.name, settings.frequency*60, settings.quantity)
+    currency.only_subs = settings.only_subs
 
     return
 
@@ -68,15 +69,21 @@ def ReloadSettings(json_data):
     currency.name = settings.name
     currency.frequency = settings.frequency
     currency.quantity = settings.quantity
+    currency.only_subs = settings.only_subs
     return
 
 
 def Unload():
     """ [Optional] Unload (Called when a user reloads their scripts or closes the bot / cleanup stuff) """
     currency.stop_timer()
+    db.close()
     return
 
 
 def ScriptToggled(state):
     """ [Optional] ScriptToggled (Notifies you when a user disables your script or enables it) """
+    if state:
+        Init()
+    else:
+        Unload()
     return
