@@ -5,6 +5,7 @@
 # system libraries
 import os
 import sys
+import re
 
 # application libraries
 sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
@@ -43,6 +44,14 @@ def Init():
 
 def Execute(data):
     """ [Required] Execute Data / Process messages """
+
+    if data.IsWhisper() and data.Message == '!%s' % settings.name:
+        reply = settings.msg_count
+        reply = re.sub(r"\$\(user\)", str(data.User), reply)
+        reply = re.sub(r"\$\(points\)", str(currency.get(data.User)), reply)
+        reply = re.sub(r"\$\(currency\)", str(settings.name), reply)
+        Parent.SendStreamWhisper(data.User, reply)
+
     return
 
 

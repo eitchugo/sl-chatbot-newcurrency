@@ -5,7 +5,7 @@
     "value": "pennies",
     "label": "Currency name",
     "tooltip": "The currency name.",
-    "group": ""
+    "group": "Core"
   },
   "frequency": {
     "type": "slider",
@@ -15,27 +15,48 @@
     "max": 60,
     "ticks": 1,
     "tooltip": "This will give users currency at the specified interval.",
-    "group": ""
+    "group": "Core"
   },
   "quantity": {
     "type": "textbox",
     "value": "10",
     "label": "Currency gain",
     "tooltip": "How many points the users will earn at each interval.",
-    "group": ""
+    "group": "Core"
   },
   "only_subs": {
     "type": "checkbox",
     "value": false,
     "label": "Only subs will gain currency",
     "tooltip": "If turned on, only subs will gain currency at each interval.",
-    "group": ""
+    "group": "Core"
   },
   "gain_offline": {
     "type": "checkbox",
     "value": false,
     "label": "Gain currency while offline",
     "tooltip": "If turned on, users on the channel will gain currency while the stream is offline.",
-    "group": ""
+    "group": "Core"
+  },
+  "exclude_users": {
+    "type": "textbox",
+    "value": "",
+    "label": "Exclude users (separate with ,)",
+    "tooltip": "Put usernames that aren't going to gain currency. Each username separated by a comma.",
+    "group": "Core"
+  },
+  "msg_whisper": {
+    "type": "checkbox",
+    "value": true,
+    "label": "Whisper answers",
+    "tooltip": "If turned on, bot will reply this currency commands only with whispers.",
+    "group": "Messages"
+  },
+  "msg_count": {
+    "type": "textbox",
+    "value": "$(user), you currently have $(points) $(currency).",
+    "label": "How many currency the user has",
+    "tooltip": "Displays how many currency the user has.\n$(user): user's name\n$(points): how many\n$(currency): currency's name",
+    "group": "Messages"
   }
 }
