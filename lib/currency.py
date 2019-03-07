@@ -79,6 +79,10 @@ class Currency(object):
         self.db.execute("UPDATE `currency` SET `quantity` = `quantity` + ? WHERE user = ?", (quantity, user,))
         self.db.commit()
 
+    def decrement(self, user, quantity):
+        self.db.execute("UPDATE `currency` SET `quantity` = `quantity` - ? WHERE user = ?", (quantity, user,))
+        self.db.commit()
+
     def reset_all(self):
         self.db.execute("DELETE FROM `currency`")
         self.db.commit()
@@ -91,6 +95,13 @@ class Currency(object):
         sql_row = self.db.execute("SELECT quantity FROM `currency` WHERE `user` = ?", (user,)).fetchone()
         if sql_row is not None:
             return int(sql_row[0])
+        else:
+            return 0
+
+    def get_all(self):
+        sql_row = self.db.execute("SELECT user, quantity FROM `currency`").fetchall()
+        if sql_row is not None:
+            return sql_row
         else:
             return 0
 

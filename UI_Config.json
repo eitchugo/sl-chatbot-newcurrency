@@ -58,5 +58,20 @@
     "label": "How many currency the user has",
     "tooltip": "Displays how many currency the user has.\n$(user): user's name\n$(points): how many\n$(currency): currency's name",
     "group": "Messages"
+  },
+  "msg_decrement": {
+    "type": "textbox",
+    "value": "Removed $(points) $(currency) from $(user). New amount: $(current).",
+    "label": "How many currency the user has",
+    "tooltip": "Displays new amount after some currency is removed.\n$(user): user's name\n$(points): how many removed\n$(currency): currency's name\n$(current): currency amount after remove",
+    "group": "Messages"
+  },
+  "export_and_view": {
+    "type": "button",
+    "label": "Export and View Current",
+    "tooltip": "Exports users' currency to a txt and view it.",
+    "function": "export_and_view_currency",
+    "wsevent": "",
+    "group": "Utilities"
   }
 }

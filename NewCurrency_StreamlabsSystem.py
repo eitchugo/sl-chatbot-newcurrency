@@ -6,6 +6,8 @@
 import os
 import sys
 import re
+import datetime
+import codecs
 
 # application libraries
 sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
@@ -18,7 +20,7 @@ ScriptName = 'NewCurrency'
 Website = 'https://twitch.tv/eitch'
 Description = 'Adds a new currency to your channel, independent of StreamLabs builtin one.'
 Creator = 'Eitch'
-Version = '0.5.0'
+Version = '0.6.0'
 
 # Define Global Variables
 database_file = os.path.join(os.path.dirname(__file__), 'Currency.db')
@@ -45,12 +47,41 @@ def Init():
 def Execute(data):
     """ [Required] Execute Data / Process messages """
 
-    if data.IsWhisper() and data.Message == '!%s' % settings.name:
+    if settings.msg_whisper:
+        is_whisper = data.IsWhisper()
+    else:
+        is_whisper = True
+
+    # see how many currency user has
+    if is_whisper and data.Message == '!%s' % settings.name:
         reply = settings.msg_count
         reply = re.sub(r"\$\(user\)", str(data.User), reply)
         reply = re.sub(r"\$\(points\)", str(currency.get(data.User)), reply)
         reply = re.sub(r"\$\(currency\)", str(settings.name), reply)
-        Parent.SendStreamWhisper(data.User, reply)
+        if settings.msg_whisper:
+            Parent.SendStreamWhisper(data.User, reply)
+        else:
+            Parent.SendStreamMessage(reply)
+
+    # caster can decrement currency for a user
+    if is_whisper and data.GetParam(0) == '!nc-remove' and Parent.HasPermission(data.User, 'Caster', ''):
+        if data.GetParamCount() == 3:
+            user = str(data.GetParam(1)).lower()
+            points = int(data.GetParam(2))
+
+            currency.decrement(user, points)
+            current = currency.get(user)
+
+            reply = settings.msg_decrement
+            reply = re.sub(r"\$\(user\)", user, reply)
+            reply = re.sub(r"\$\(points\)", str(points), reply)
+            reply = re.sub(r"\$\(currency\)", str(settings.name), reply)
+            reply = re.sub(r"\$\(current\)", str(current), reply)
+
+            if settings.msg_whisper:
+                Parent.SendStreamWhisper(data.User, reply)
+            else:
+                Parent.SendStreamMessage(reply)
 
     return
 
@@ -95,4 +126,17 @@ def ScriptToggled(state):
         Init()
     else:
         Unload()
+    return
+
+
+def export_and_view_currency():
+    """Exports users' currency to a txt and view it."""
+    Parent.Log('NewCurrency', "[%s] Exporting users' currency." % datetime.datetime.now())
+    location = os.path.join(os.path.dirname(__file__), "exported_currency.txt")
+    with codecs.open(location, encoding='utf-8-sig', mode='w+') as f:
+        f.write("Generated at: %s\r\n" % datetime.datetime.now())
+        for entry in currency.get_all():
+            f.write(unicode(entry).encode('utf-8') + "\r\n")
+
+    os.startfile(location)
     return

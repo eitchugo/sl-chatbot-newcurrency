@@ -14,6 +14,7 @@ class MySettings(object):
     exclude_users = ""  # type: str
     msg_whisper = True  # type: bool
     msg_count = "$(user), you currently have $(points) $(currency)."  # type: str
+    msg_decrement = "Removed $(points) $(currency) from $(user). New amount: $(current)."  # type: str
 
     def __init__(self, settings_file):
         self.settings_file = settings_file
@@ -25,6 +26,7 @@ class MySettings(object):
         self.exclude_users = MySettings.exclude_users
         self.msg_whisper = MySettings.msg_whisper
         self.msg_count = MySettings.msg_count
+        self.msg_decrement = MySettings.msg_decrement
 
         try:
             with codecs.open(settings_file, encoding='utf-8-sig', mode='r') as f:

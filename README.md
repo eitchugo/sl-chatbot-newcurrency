@@ -21,6 +21,12 @@ the `.db` extension.
 
 # Change Log
 
+## 0.6.0
+
+* Export and view currency as text
+* Caster can now remove currency
+* Whisper-only messages settings
+
 ## 0.5.0
 
 * Initial public release
