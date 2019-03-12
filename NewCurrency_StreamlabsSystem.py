@@ -20,7 +20,7 @@ ScriptName = 'NewCurrency'
 Website = 'https://twitch.tv/eitch'
 Description = 'Adds a new currency to your channel, independent of StreamLabs builtin one.'
 Creator = 'Eitch'
-Version = '0.6.0'
+Version = '0.6.1'
 
 # Define Global Variables
 database_file = os.path.join(os.path.dirname(__file__), 'Currency.db')
@@ -47,6 +47,7 @@ def Init():
 def Execute(data):
     """ [Required] Execute Data / Process messages """
 
+    # determine if it will work only on whisper or not
     if settings.msg_whisper:
         is_whisper = data.IsWhisper()
     else:
@@ -63,8 +64,32 @@ def Execute(data):
         else:
             Parent.SendStreamMessage(reply)
 
+    # caster can increment currency for a user
+    elif is_whisper and re.search(r'^!%s-add' % settings.name, data.GetParam(0)) and \
+            Parent.HasPermission(data.User, 'Caster', ''):
+
+        if data.GetParamCount() == 3:
+            user = str(data.GetParam(1)).lower()
+            points = int(data.GetParam(2))
+
+            currency.increment(user, points)
+            current = currency.get(user)
+
+            reply = settings.msg_increment
+            reply = re.sub(r"\$\(user\)", user, reply)
+            reply = re.sub(r"\$\(points\)", str(points), reply)
+            reply = re.sub(r"\$\(currency\)", str(settings.name), reply)
+            reply = re.sub(r"\$\(current\)", str(current), reply)
+
+            if settings.msg_whisper:
+                Parent.SendStreamWhisper(data.User, reply)
+            else:
+                Parent.SendStreamMessage(reply)
+
     # caster can decrement currency for a user
-    if is_whisper and data.GetParam(0) == '!nc-remove' and Parent.HasPermission(data.User, 'Caster', ''):
+    elif is_whisper and re.search(r'^!%s-remove' % settings.name, data.GetParam(0)) and \
+            Parent.HasPermission(data.User, 'Caster', ''):
+
         if data.GetParamCount() == 3:
             user = str(data.GetParam(1)).lower()
             points = int(data.GetParam(2))
@@ -88,16 +113,20 @@ def Execute(data):
 
 def Tick():
     """ [Required] Tick method (Gets called during every iteration even when there is no incoming data) """
-    if Parent.IsLive():
-        # always gain currency while live
-        currency.start_timer()
-    else:
-        # gain currency while offline, if setting is enabled
-        if settings.gain_offline:
+    if not settings.quantity == 0:
+        if Parent.IsLive():
+            # always gain currency while live
             currency.start_timer()
         else:
-            # offline, disable currency gain
-            currency.stop_timer()
+            # gain currency while offline, if setting is enabled
+            if settings.gain_offline:
+                currency.start_timer()
+            else:
+                # offline, disable currency gain
+                currency.stop_timer()
+    else:
+        # if quantity is 0, no need to use a timer to gain currency
+        currency.stop_timer()
 
     return
 

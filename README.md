@@ -14,12 +14,17 @@ The script uses SQLite python library to create a local database file containing
 all the users and their currencies. The database file location is the same as the
 script itself. For example:
 
-* C:\Users\`<USER>`\AppData\Roaming\Streamlabs\Streamlabs Chatbot\Services\Scripts\sl-chatbot-newcurrency
+* C:\Users\<USER>\AppData\Roaming\Streamlabs\Streamlabs Chatbot\Services\Scripts\sl-chatbot-newcurrency
 
 Where `<USER>` is your local user. All databases used by this script will have
 the `.db` extension.
 
 # Change Log
+
+## 0.6.1
+
+* Caster can now add currency
+* Changed commands to `!<name>-add` and `!<name>-remove` for adding and removing currency.
 
 ## 0.6.0
 

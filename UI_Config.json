@@ -7,6 +7,13 @@
     "tooltip": "The currency name.",
     "group": "Core"
   },
+  "quantity": {
+    "type": "textbox",
+    "value": "10",
+    "label": "Currency gain",
+    "tooltip": "How many points the users will earn at each interval.\n0 will disable automatic gain.",
+    "group": "Core"
+  },
   "frequency": {
     "type": "slider",
     "label": "Interval between currency gains",
@@ -15,13 +22,6 @@
     "max": 60,
     "ticks": 1,
     "tooltip": "This will give users currency at the specified interval.",
-    "group": "Core"
-  },
-  "quantity": {
-    "type": "textbox",
-    "value": "10",
-    "label": "Currency gain",
-    "tooltip": "How many points the users will earn at each interval.",
     "group": "Core"
   },
   "only_subs": {
@@ -59,10 +59,17 @@
     "tooltip": "Displays how many currency the user has.\n$(user): user's name\n$(points): how many\n$(currency): currency's name",
     "group": "Messages"
   },
+  "msg_increment": {
+    "type": "textbox",
+    "value": "Added $(points) $(currency) to $(user). New amount: $(current).",
+    "label": "Add currency for a user",
+    "tooltip": "Displays new amount after some currency is added.\n$(user): user's name\n$(points): how many added\n$(currency): currency's name\n$(current): currency amount after adding",
+    "group": "Messages"
+  },
   "msg_decrement": {
     "type": "textbox",
     "value": "Removed $(points) $(currency) from $(user). New amount: $(current).",
-    "label": "How many currency the user has",
+    "label": "Remove currency for a user",
     "tooltip": "Displays new amount after some currency is removed.\n$(user): user's name\n$(points): how many removed\n$(currency): currency's name\n$(current): currency amount after remove",
     "group": "Messages"
   },
