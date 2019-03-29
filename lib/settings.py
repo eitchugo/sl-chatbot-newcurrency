@@ -16,6 +16,7 @@ class MySettings(object):
     msg_count = "$(user), you currently have $(points) $(currency)."  # type: str
     msg_increment = "Added $(points) $(currency) to $(user). New amount: $(current)."  # type: str
     msg_decrement = "Removed $(points) $(currency) from $(user). New amount: $(current)."  # type: str
+    loot_notification = None  # type: str
 
     def __init__(self, settings_file):
         self.settings_file = settings_file
@@ -29,6 +30,7 @@ class MySettings(object):
         self.msg_count = MySettings.msg_count
         self.msg_increment = MySettings.msg_increment
         self.msg_decrement = MySettings.msg_decrement
+        self.loot_notification = MySettings.loot_notification
 
         try:
             with codecs.open(settings_file, encoding='utf-8-sig', mode='r') as f:

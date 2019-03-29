@@ -80,5 +80,12 @@
     "function": "export_and_view_currency",
     "wsevent": "",
     "group": "Utilities"
+  },
+  "loot_notification": {
+    "type": "textbox",
+    "value": "",
+    "label": "Loot notification user",
+    "tooltip": "Which user will receive notification when loot is consumed. Usually the caster.",
+    "group": "Loot"
   }
 }

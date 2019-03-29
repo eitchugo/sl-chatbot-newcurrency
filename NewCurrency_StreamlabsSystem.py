@@ -14,13 +14,14 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
 from settings import MySettings  # noqa: E402
 from database import InstancedDatabase  # noqa: E402
 from currency import Currency  # noqa: E402
+from loot import Loot  # noqa: E402
 
 # [Required] Script Information
 ScriptName = 'NewCurrency'
 Website = 'https://twitch.tv/eitch'
 Description = 'Adds a new currency to your channel, independent of StreamLabs builtin one.'
 Creator = 'Eitch'
-Version = '0.6.1'
+Version = '0.7.0'
 
 # Define Global Variables
 database_file = os.path.join(os.path.dirname(__file__), 'Currency.db')
@@ -40,6 +41,10 @@ def Init():
     db = InstancedDatabase(database_file)
     currency = Currency(Parent, db, settings.name, settings.frequency*60, settings.quantity)
     currency.only_subs = settings.only_subs
+
+    # loot initialization
+    global loot
+    loot = Loot(Parent, db)
 
     return
 
@@ -107,6 +112,64 @@ def Execute(data):
                 Parent.SendStreamWhisper(data.User, reply)
             else:
                 Parent.SendStreamMessage(reply)
+
+    # loot operations
+    elif is_whisper and re.search(r'^!%s-loot-' % settings.name, data.GetParam(0)):
+        params = []
+        for param in range(0, data.GetParamCount()):
+            params.append(data.GetParam(param))
+
+        # listing loot
+        if params[0] == "!%s-loot-list" % settings.name:
+            rs = loot.list()
+            if rs:
+                Parent.SendStreamWhisper(data.User, 'Items you can obtain:')
+                Parent.SendStreamWhisper(data.User, '   <cost> - <description>')
+                for item in rs:
+                    Parent.SendStreamWhisper(data.User, '   %s - %s' % (item[0], item[1]))
+            else:
+                Parent.SendStreamWhisper(data.User, 'No active items found in shop! :(')
+
+        elif params[0] == "!%s-loot-get" % settings.name:
+            # !nc-loot-get <description>
+            description = ' '.join(params[1:])
+            item = loot.get(description)
+            if item:
+                # check if user has currency to redeem the item
+                if currency.get(data.User) >= item[1]:
+                    loot.delete(item[0])
+                    currency.decrement(data.User, item[1])
+                    Parent.SendStreamWhisper(data.User, 'Obtained item! Loot is: %s' % item[2])
+                    if settings.loot_notification:
+                        Parent.SendStreamWhisper(
+                            settings.loot_notification, '%s obtained item: %s' % (str(data.User), description))
+                else:
+                    Parent.SendStreamWhisper(data.User, "You don't have enough %s to get this!" % settings.name)
+            else:
+                Parent.SendStreamWhisper(data.User, "Item not found! Make sure you copy and paste exactly de description.")
+
+        # caster adding new loot
+        elif params[0] == "!%s-loot-add" % settings.name and Parent.HasPermission(data.User, 'Caster', ''):
+            params = []
+            for param in range(0, data.GetParamCount()):
+                params.append(data.GetParam(param))
+
+            # !nc-loot-add <cost> <loot> <description>
+            rs = loot.insert(params[1], ' '.join(params[3:]), '', '', params[2])
+            if rs:
+                Parent.SendStreamWhisper(data.User, 'Loot added to database.')
+            else:
+                Parent.SendStreamWhisper(data.User, 'ERROR while adding loot to database.')
+
+        # caster deactivating loot
+        elif params[0] == "!%s-loot-del" % settings.name and Parent.HasPermission(data.User, 'Caster', ''):
+            # !nc-loot-del <description>
+            item = loot.get(' '.join(params[1:]))
+            if item:
+                loot.delete(item[0])
+                Parent.SendStreamWhisper(data.User, 'Loot deactivated from the database.')
+            else:
+                Parent.SendStreamWhisper(data.User, 'ERROR while deactivating loot from the database: not found.')
 
     return
 

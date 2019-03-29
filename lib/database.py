@@ -20,7 +20,11 @@ class InstancedDatabase(object):
 
     def commit(self):
         """ Commit any changes of the instanced database. """
-        self._connection.commit()
+        try:
+            self._connection.commit()
+            return True
+        except sqlite3.Error:
+            return False
 
     def close(self):
         """ Close the instanced database connection. """
