@@ -22,11 +22,36 @@ tooltips will explain the options themselves.
 ## Checking your currency
 
 Users can type `!<name>` in chat or whisper (depending on your settings) to view how many
-currency they have.
+currency they have. For a example, with a currency named `pennies`:
+
+```
+!pennies
+```
 
 If you want to check all users and their currency, use the `Export and view current` button on 
 the Utilities Group Setting. A text file will be made and opened in your system. This text message
 is only updated when you press the button.
+
+## Adding or removing currency manually
+
+The caster can manually add currency to a user. This is specially important if you deactivate 
+automatic gain.
+
+Use the following commands: 
+
+```
+# !<name>-add <description>
+!pennies-add eitch 10
+```
+
+This will add 10 currency units to the user `eitch`.
+
+And for removing:
+
+```
+# !<name>-remove <description>
+!pennies-remove eitch 10
+```
 
 # Loot Usage
 
