@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-"""Allow subs to create commands."""
+"""Adds a new currency to your channel, independent of StreamLabs builtin one."""
 
 # system libraries
 import os
@@ -21,7 +21,7 @@ ScriptName = 'NewCurrency'
 Website = 'https://twitch.tv/eitch'
 Description = 'Adds a new currency to your channel, independent of StreamLabs builtin one.'
 Creator = 'Eitch'
-Version = '0.7.1'
+Version = '0.7.2'
 
 # Define Global Variables
 database_file = os.path.join(os.path.dirname(__file__), 'Currency.db')

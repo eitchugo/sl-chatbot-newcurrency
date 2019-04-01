@@ -94,10 +94,12 @@ class Currency(object):
                 self.db.commit()
 
     def increment(self, user, quantity):
+        self.insert(user)
         self.db.execute("UPDATE `currency` SET `quantity` = `quantity` + ? WHERE user = ?", (quantity, user,))
         self.db.commit()
 
     def decrement(self, user, quantity):
+        self.insert(user)
         self.db.execute("UPDATE `currency` SET `quantity` = `quantity` - ? WHERE user = ?", (quantity, user,))
         self.db.commit()
 

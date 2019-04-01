@@ -91,6 +91,10 @@ the `.db` extension.
 
 # Change Log
 
+## 0.7.2
+
+* Increment and decrement will also try to add a user to the currency table first.
+
 ## 0.7.1
 
 * Fixed a bug when sometimes the timer to gain currency are activated twice+.
