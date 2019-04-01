@@ -21,7 +21,7 @@ ScriptName = 'NewCurrency'
 Website = 'https://twitch.tv/eitch'
 Description = 'Adds a new currency to your channel, independent of StreamLabs builtin one.'
 Creator = 'Eitch'
-Version = '0.7.0'
+Version = '0.7.1'
 
 # Define Global Variables
 database_file = os.path.join(os.path.dirname(__file__), 'Currency.db')
@@ -41,6 +41,7 @@ def Init():
     db = InstancedDatabase(database_file)
     currency = Currency(Parent, db, settings.name, settings.frequency*60, settings.quantity)
     currency.only_subs = settings.only_subs
+    currency.exclude_users = settings.exclude_users
 
     # loot initialization
     global loot
@@ -198,10 +199,8 @@ def ReloadSettings(json_data):
     """ [Optional] Reload Settings (Called when a user clicks the Save Settings button in the Chatbot UI) """
     settings.reload(json_data)
     settings.save()
-    currency.name = settings.name
-    currency.frequency = settings.frequency
-    currency.quantity = settings.quantity
-    currency.only_subs = settings.only_subs
+    Unload()
+    Init()
     return
 
 

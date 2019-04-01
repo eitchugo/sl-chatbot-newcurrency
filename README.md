@@ -91,6 +91,13 @@ the `.db` extension.
 
 # Change Log
 
+## 0.7.1
+
+* Fixed a bug when sometimes the timer to gain currency are activated twice+.
+* Fixed a bug when save settings was applying gain frequency wrongly.
+* Fixed a bug when excluded users were being ignored from gaining currency.
+* Added log message when adding currency on the configured interval.
+
 ## 0.7.0
 
 * Loots added to the system. Users can spend the new currency to obtain loots from a "shop".

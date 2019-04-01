@@ -54,6 +54,8 @@ class MySettings(object):
         except ValueError:
             self.frequency = MySettings.frequency
 
+        self.exclude_users = self.exclude_users.lower()
+
         try:
             with codecs.open(self.settings_file, encoding='utf-8-sig', mode='w+') as f:
                 f.write(json.dumps(self.__dict__, encoding='utf-8'))

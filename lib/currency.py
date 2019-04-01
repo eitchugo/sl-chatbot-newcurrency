@@ -4,6 +4,24 @@ import time
 import datetime
 
 
+class CurrencyThread(threading.Thread):
+    def __init__(self, currency):
+        super(CurrencyThread, self).__init__()
+        self.currency = currency
+
+    def run(self):
+        while self.currency.is_running:
+            time.sleep(self.currency.frequency)
+            if not self.currency.is_running:
+                break
+
+            self.currency.insert_all()
+            self.currency.stream.Log(
+                'NewCurrency', "[%s] Viewers gaining currency now (automatic interval %d)." % (
+                    datetime.datetime.now(), self.currency.frequency))
+            self.currency.increment_all(self.currency.quantity)
+
+
 class Currency(object):
     """ Currency handler """
 
@@ -13,11 +31,11 @@ class Currency(object):
         self.name = name
         self.frequency = frequency
         self.quantity = quantity
-        self.is_running = False
         self.gain_offline = False
-        self.thread = None
         self.only_subs = False
         self.exclude_users = ""
+        self.thread = CurrencyThread(self)
+        self.is_running = False
 
         db.execute('CREATE TABLE IF NOT EXISTS `currency` ('
                    '`user` TEXT PRIMARY KEY NOT NULL,'
@@ -60,7 +78,7 @@ class Currency(object):
             insert = False
 
             # skip if user on blacklist
-            if user in blacklist:
+            if user.lower() in blacklist:
                 continue
 
             # sub-only mode
@@ -106,20 +124,13 @@ class Currency(object):
             return 0
 
     def start_timer(self):
-        if not self.is_running:
+        if self.thread.is_alive() is False and self.is_running is False:
             self.stream.Log('NewCurrency', "[%s] Starting currency timer." % datetime.datetime.now())
             self.is_running = True
-            self.thread = threading.Thread(target=self._thread, args=()).start()
+            self.thread = CurrencyThread(self)
+            self.thread.start()
 
     def stop_timer(self):
         if self.is_running:
             self.stream.Log('NewCurrency', "[%s] Stopping currency timer." % datetime.datetime.now())
             self.is_running = False
-
-    def _thread(self):
-        while self.is_running:
-            self.insert_all()
-            self.increment_all(self.quantity)
-            time.sleep(self.frequency)
-
-        self.stop_timer()
