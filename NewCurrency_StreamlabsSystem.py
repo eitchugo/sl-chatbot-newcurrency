@@ -15,13 +15,14 @@ from settings import MySettings  # noqa: E402
 from database import InstancedDatabase  # noqa: E402
 from currency import Currency  # noqa: E402
 from loot import Loot  # noqa: E402
+from streamlabs import SLNotifies  # noqa: E402
 
 # [Required] Script Information
 ScriptName = 'NewCurrency'
 Website = 'https://twitch.tv/eitch'
 Description = 'Adds a new currency to your channel, independent of StreamLabs builtin one.'
 Creator = 'Eitch'
-Version = '0.7.2'
+Version = '0.8.0'
 
 # Define Global Variables
 database_file = os.path.join(os.path.dirname(__file__), 'Currency.db')
@@ -42,6 +43,12 @@ def Init():
     currency = Currency(Parent, db, settings.name, settings.frequency*60, settings.quantity)
     currency.only_subs = settings.only_subs
     currency.exclude_users = settings.exclude_users
+
+    # streamlabs notifies
+    global streamlabs_api
+    streamlabs_api = SLNotifies(Parent, currency, settings.streamlabs_bits)
+    if settings.streamlabs_apikey:
+        streamlabs_api.connect(settings.streamlabs_apikey)
 
     # loot initialization
     global loot
@@ -207,6 +214,7 @@ def ReloadSettings(json_data):
 def Unload():
     """ [Optional] Unload (Called when a user reloads their scripts or closes the bot / cleanup stuff) """
     currency.stop_timer()
+    streamlabs_api.disconnect()
     db.close()
     return
 

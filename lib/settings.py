@@ -16,6 +16,8 @@ class MySettings(object):
     msg_count = "$(user), you currently have $(points) $(currency)."  # type: str
     msg_increment = "Added $(points) $(currency) to $(user). New amount: $(current)."  # type: str
     msg_decrement = "Removed $(points) $(currency) from $(user). New amount: $(current)."  # type: str
+    streamlabs_apikey = None  # type: str
+    streamlabs_bits = 1  # type: float
     loot_notification = None  # type: str
 
     def __init__(self, settings_file):
@@ -30,6 +32,8 @@ class MySettings(object):
         self.msg_count = MySettings.msg_count
         self.msg_increment = MySettings.msg_increment
         self.msg_decrement = MySettings.msg_decrement
+        self.streamlabs_apikey = MySettings.streamlabs_apikey
+        self.streamlabs_bits = MySettings.streamlabs_bits
         self.loot_notification = MySettings.loot_notification
 
         try:
@@ -53,6 +57,11 @@ class MySettings(object):
             self.frequency = int(self.frequency)
         except ValueError:
             self.frequency = MySettings.frequency
+
+        try:
+            self.streamlabs_bits = float(self.streamlabs_bits)
+        except ValueError:
+            self.streamlabs_bits = MySettings.streamlabs_bits
 
         self.exclude_users = self.exclude_users.lower()
 

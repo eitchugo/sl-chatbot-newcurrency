@@ -59,6 +59,24 @@ And for removing:
 !pennies-remove eitch 10
 ```
 
+# Streamlabs notifications
+
+You can enable streamlabs notifications on this script to convert bits/donations into
+the new currency. To do this, grab your Socket API Token on your Streamlabs settings:
+
+```
+Streamlabs Dashboard -> Settings -> API Settings -> Your Socket API Token
+```
+
+Copy and paste into the `Streamlabs Socket API Token` field on the script configuration.
+
+You'll also need to put the `StreamlabsEventReceiver.dll` file in the script's lib directory.
+Since it's closed source, I can't distribute it here. Contact the author (Ocgineer) or me on
+Discord: https://discordapp.com/invite/J4QMG5m 
+
+This will be included as open source very soon(tm).
+ 
+
 # Loot Usage
 
 A loot/shop system can be used to spend the currency. The caster can add and remove items from
@@ -121,6 +139,10 @@ Where `<USER>` is your local user. All databases used by this script will have
 the `.db` extension.
 
 # Change Log
+
+## 0.8.0
+
+* Added support for streamlabs notification using StreamlabsEventReceiver.dll from Ocgineer.
 
 ## 0.7.2
 

@@ -109,3 +109,4 @@ venv.bak/
 /settings.json
 /settings.js
 /Currency.db
+/lib/StreamlabsEventReceiver.dll

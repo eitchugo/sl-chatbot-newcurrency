@@ -73,6 +73,20 @@
     "tooltip": "Displays new amount after some currency is removed.\n$(user): user's name\n$(points): how many removed\n$(currency): currency's name\n$(current): currency amount after remove",
     "group": "Messages"
   },
+  "streamlabs_apikey": {
+    "type": "textbox",
+    "value": "",
+    "label": "Streamlabs Socket API Token",
+    "tooltip": "If using streamlabs notifications, enter the socket api token. See README for instructions.",
+    "group": "Streamlabs Bits and Donations"
+  },
+  "streamlabs_bits": {
+    "type": "textbox",
+    "value": "1",
+    "label": "Bits to currency unit",
+    "tooltip": "How many currency the user will gain with one bit.",
+    "group": "Streamlabs Bits and Donations"
+  },
   "export_and_view": {
     "type": "button",
     "label": "Export and View Current",
