@@ -1,6 +1,12 @@
 # StreamLabs Chatbot Script - New Currency
 
-Script for Streamlabs Chatbot for adding a new currency
+Script for Streamlabs Chatbot for adding a new currency. My use-case for this new currency is
+to give my subscribers a currency that they can use to buy real things and requests using real
+money instead of only viewing time.
+
+Also, since I use a lot of gambling (for fun!) on the streamlabs chatbot builtin currency,
+a separated currency is good for consistency on providing goods like game keys, gameplay requests
+and other "non-cosmetic" things. 
 
 # Installation and use
 
